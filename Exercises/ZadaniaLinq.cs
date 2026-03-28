@@ -17,7 +17,9 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie01_StudenciZWarszawy()
     {
-        return DaneUczelni.Studenci.Where(s => s.Miasto == "Warsaw").Select(s => $"{s.NumerIndeksu} {s.Imie} {s.Nazwisko} {s.Miasto}");
+        return DaneUczelni.Studenci
+            .Where(s => s.Miasto == "Warsaw")
+            .Select(s => $"{s.NumerIndeksu} {s.Imie} {s.Nazwisko} {s.Miasto}");
     }
 
     /// <summary>
@@ -31,7 +33,8 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie02_AdresyEmailStudentow()
     {
-       return DaneUczelni.Studenci.Select(s => $"{s.Email}");
+       return DaneUczelni.Studenci
+           .Select(s => $"{s.Email}");
     }
 
     /// <summary>
@@ -46,7 +49,10 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie03_StudenciPosortowani()
     {
-        return DaneUczelni.Studenci.OrderBy(s => s.Nazwisko).ThenBy(s => s.Imie).Select(s => $"{s.NumerIndeksu} {s.Imie} {s.Nazwisko}");
+        return DaneUczelni.Studenci
+            .OrderBy(s => s.Nazwisko)
+            .ThenBy(s => s.Imie)
+            .Select(s => $"{s.NumerIndeksu} {s.Imie} {s.Nazwisko}");
     }
 
     /// <summary>
@@ -61,7 +67,10 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie04_PierwszyPrzedmiotAnalityczny()
     {
-        throw Niezaimplementowano(nameof(Zadanie04_PierwszyPrzedmiotAnalityczny));
+        return [DaneUczelni.Przedmioty
+            .Where(p => p.Kategoria == "Analytics")
+            .Select(p => $"{p.Nazwa}, {p.DataStartu}")
+            .FirstOrDefault() ?? "Nie ma przedmiotu z kategorii Analytics"];
     }
 
     /// <summary>
