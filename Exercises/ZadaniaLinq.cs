@@ -227,7 +227,8 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie13_GrupowanieZapisowWedlugPrzedmiotu()
     {
-        throw Niezaimplementowano(nameof(Zadanie13_GrupowanieZapisowWedlugPrzedmiotu));
+        return DaneUczelni.Przedmioty
+            .GroupJoin(DaneUczelni.Zapisy, p => p.Id, z => z.PrzedmiotId, (p, ze) => $"{p.Nazwa} {ze.Count()}");
     }
 
     /// <summary>
