@@ -285,7 +285,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie16_NajwyzszaOcenaKazdegoStudenta()
     {
-        throw Niezaimplementowano(nameof(Zadanie16_NajwyzszaOcenaKazdegoStudenta));
+        return DaneUczelni.Studenci
+            .Join(DaneUczelni.Zapisy, s => s.Id, z => z.StudentId, (s, z) => new { z, s })
+            .Where(x => x.z.OcenaKoncowa != null)
+            .GroupBy(x => $"{x.s.Imie} {x.s.Nazwisko}")
+            .Select(g => $"{g.Key} {g.Max(x => x.z.OcenaKoncowa)}");
     }
 
     /// <summary>
