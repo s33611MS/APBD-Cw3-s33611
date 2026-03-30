@@ -286,7 +286,7 @@ public sealed class ZadaniaLinq
     public IEnumerable<string> Zadanie16_NajwyzszaOcenaKazdegoStudenta()
     {
         return DaneUczelni.Studenci
-            .Join(DaneUczelni.Zapisy, s => s.Id, z => z.StudentId, (s, z) => new { z, s })
+            .Join(DaneUczelni.Zapisy, s => s.Id, z => z.StudentId, (s, z) => new { s, z })
             .Where(x => x.z.OcenaKoncowa != null)
             .GroupBy(x => $"{x.s.Imie} {x.s.Nazwisko}")
             .Select(g => $"{g.Key} {g.Max(x => x.z.OcenaKoncowa)}");
@@ -308,7 +308,7 @@ public sealed class ZadaniaLinq
     public IEnumerable<string> Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem()
     {
         return DaneUczelni.Studenci
-            .Join(DaneUczelni.Zapisy, s => s.Id, z => z.StudentId, (s, z) => new { z, s })
+            .Join(DaneUczelni.Zapisy, s => s.Id, z => z.StudentId, (s, z) => new { s, z })
             .Where(x => x.z.CzyAktywny)
             .GroupBy(x => $"{x.s.Imie} {x.s.Nazwisko}")
             .Where(g => g.Count() > 1)
@@ -329,7 +329,12 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Wyzwanie02_PrzedmiotyStartujaceWKwietniuBezOcenKoncowych()
     {
-        throw Niezaimplementowano(nameof(Wyzwanie02_PrzedmiotyStartujaceWKwietniuBezOcenKoncowych));
+        return DaneUczelni.Przedmioty
+            .Where(p => p.DataStartu.Year == 2026 && p.DataStartu.Month == 4)
+            .Join(DaneUczelni.Zapisy, p => p.Id, z => z.PrzedmiotId, (p, z) => new { p, z })
+            .GroupBy(x => x.p.Nazwa)
+            .Where(g => g.All(x => x.z.OcenaKoncowa == null))
+            .Select(g => g.Key);
     }
 
     /// <summary>
